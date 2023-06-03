@@ -97,6 +97,7 @@ pragma solidity ^0.8.18;
 // @dev Interface of the ERC20 standard as defined in the EIP.
 
 interface IERC20 {
+
     /*
     * @dev Emitted when 'value' tokens are moved from one account ('from') to
     * another ('to').
@@ -158,6 +159,54 @@ interface IERC20 {
 
 // File: @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol
 // OpenZeppelin Contracts (token/ERC20/extensions/IERC20Metadata.sol)
+
+pragma solidity ^0.8.18;
+
+// @dev Interface for the optional metadata functions from the ERC20 standard.
+
+interface IERC20Metadata is IERC20 {
+    
+    // @dev Returns the name of the token.
+    function name() external view returns (string memory);
+
+    // @dev Returns the symbol of the token.
+    function symbol() external view returns (string memory);
+
+    // @dev Returns the decimals places of the token.
+    function decimals() external view returns (uint8);
+}
+
+// File: @openzeppelin/contracts/token/ERC20/ERC20.sol
+// OpenZeppelin Contracts (token/ERC20/ERC20.sol)
+
+pragma solidity ^0.8.18;
+
+/*
+* @dev Implementation of the {IERC20} interface.
+* This implementation is agnostic to the way tokens are created. This means
+* that a supply mechanism has to be added in a derived contract using {_mint}.
+* For a generic mechanism see {ERC20PresetMinterPauser}.
+* We have followed general OpenZeppelin Contracts guidelines: functions revert
+* instead returning 'false' on failure. This behavior is nonetheless
+* conventional and does not conflict with the expectations of ERC20 applications.
+* Additionally, an {Approval} event is emitted on calls to {transferFrom}.
+* This allows applications to reconstruct the allowance for all accounts just
+* by listening to said events. Other implementations of the EIP may not emit
+* these events, as it isn't required by the specification.
+* Finally, the non-standard {decreaseAllowance} and {increaseAllowance}
+* functions have been added to mitigate the well-known issues around setting
+* allowances. See {IERC20-approve}.
+*/
+
+
+
+
+
+
+
+
+
+
 
 
 
