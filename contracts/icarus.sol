@@ -2,7 +2,7 @@
 // File: @openzeppelin/contracts/utils/Context.sol
 // OpenZeppelin Contracts (utils/Context.sol)
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 /*
 * @dev Provides information about the current execution context, including the
@@ -26,7 +26,7 @@ abstract contract Context {
 // File: @openzeppelin/contracts/access/Ownable.sol
 // OpenZeppelin Contracts (access/Ownable.sol)
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 /*
 * @dev Contract module which provides a basic access control mechanism, where
@@ -92,7 +92,7 @@ abstract contract Ownable is Context {
 // File: @openzeppelin/contracts/token/ERC20/IERC20.sol
 // OpenZeppelin Contracts (token/ERC20/IERC20.sol)
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 // @dev Interface of the ERC20 standard as defined in the EIP.
 
@@ -160,7 +160,7 @@ interface IERC20 {
 // File: @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol
 // OpenZeppelin Contracts (token/ERC20/extensions/IERC20Metadata.sol)
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 // @dev Interface for the optional metadata functions from the ERC20 standard.
 
@@ -179,7 +179,7 @@ interface IERC20Metadata is IERC20 {
 // File: @openzeppelin/contracts/token/ERC20/ERC20.sol
 // OpenZeppelin Contracts (token/ERC20/ERC20.sol)
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 /*
 * @dev Implementation of the {IERC20} interface.
@@ -198,9 +198,58 @@ pragma solidity ^0.8.18;
 * allowances. See {IERC20-approve}.
 */
 
+contract ERC20 is Context, IERC20, IERC20Metadata {
+    mapping(address => uint256) private _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
 
+    /*
+    * @dev Sets the values for {name} and {symbol}.
+    * The default value of {decimals} is 18. To select a different value for
+    * {decimals} you should overload it.
+    * All two of these values are immutable: they can only be set once during
+    * construction.
+    */
+    constructor(string memory name_, string memory symbol_) {
+        _name = name_;
+        _symbol = symbol_;
+    }
 
+    // @dev Returns the name of the token.
+        function name() public view virtual override returns (string memory) {
+        return _name;
+    }
 
+    // @dev Returns the symbol of the token, usually a shorter version of the name.
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
+    }
+
+    /*
+    * @dev Returns the number of decimals used to get its user representation.
+    * For example, if `decimals` equals `2`, a balance of `505` tokens should
+    * be displayed to a user as `5.05` (`505 / 10 ** 2`).
+    * Tokens usually opt for a value of 18, imitating the relationship between
+    * Ether and Wei. This is the value {ERC20} uses, unless this function is overriden.
+    * NOTE: This information is only used for _display_ purposes: it in
+    * no way affects any of the arithmetic of the contract, including
+    * {IERC20-balanceOf} and {IERC20-transfer}.
+    */
+    function decimals() public view virtual override returns (uint8) {
+        return 18;
+    }
+
+    // @dev See {IERC20-totalSupply}.
+    function totalSupply() public view virtual override returns (uint256) {
+        return _totalSupply;
+    }
+
+    // @dev See {IERC20-balanceOf}.
+    function balanceOf(address account) public view virtual override returns (uint256) {
+        return _balances[account];
+    }
 
 
 
