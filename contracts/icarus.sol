@@ -251,6 +251,59 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         return _balances[account];
     }
 
+    /*
+    * @dev See {IERC20-transfer}.
+    * Requirements:
+    * - 'recipient' cannot be the zero address.
+    * - the caller must have a balance of at least 'amount'.
+    */
+    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
+        _transfer(_msgSender(), recipient, amount);
+        return true;
+    }
+
+    // @dev See {IERC20-allowance}.
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+        return _allowances[owner][spender];
+    }
+
+    /*
+    * @dev See {IERC20-approve}.
+    * Requirements: 'spender' cannot be the zero address.
+    */
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+        _approve(_msgSender(), spender, amount);
+        return true;
+    }
+    
+    /*
+    * @dev See {IERC20-transferFrom}.
+    * Emits an {Approval} event indicating the updated allowance. This is not
+    * required by the EIP. See the note at the beginning of {ERC20}.
+    * Requirements:
+    * - 'sender' and 'recipient' cannot be the zero address.
+    * - 'sender' must have a balance of at least 'amount'.
+    * - the caller must have allowance for 'sender' tokens of at least 'amount'.
+    */
+    function transferFrom(address sender, address recipient, uint256 amount)
+    public virtual override returns (bool) {
+        _transfer(sender, recipient, amount);
+        uint256 currentAllowance = _allowances[sender][_msgSender()];
+        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        unchecked {
+            _approve(sender, _msgSender(), currentAllowance - amount);
+        }
+        return true;
+    }
+    
+    
+
+
+
+
+
+
+
 
 
 
