@@ -35,6 +35,50 @@ interface INonfungiblePositionManager {
 
 //-------------------------------------------------------------------------------------------------------
 // File: contracts/icaruscoin.sol
+contract Icarus is ERC20, Ownable {
+    uint256 private constant INITIAL_SUPPLY = 149597870700 * 10**18;
+    
+
+constructor() ERC20("Icarus", "ICARUS") {
+        _mint(msg.sender, INITIAL_SUPPLY);
+    }
+    
+constructor(uint256 _totalSupply) ERC20("Icarus", "ICARUS") {
+        _mint(msg.sender, _totalSupply);
+    }
+
+constructor() ERC20("Meme Token", "MEME") {
+        _mint(address(this), supply);
+        fixOrdering();
+        pool = posMan.createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96);
+    }
+
+
+}
+
+
+
+//-------------------------------------------------------------------------------------------------------
+
+contract Turbo is ERC20, ERC20Burnable, Ownable {
+    uint256 private constant INITIAL_SUPPLY = 69000000000 * 10**18; 
+
+    constructor() ERC20("Turbo", "TURBO") {
+        _mint(msg.sender, INITIAL_SUPPLY);
+    }
+
+    function distributeTokens(address distributionWallet) external onlyOwner {
+        uint256 supply = balanceOf(msg.sender);
+        require(supply == INITIAL_SUPPLY, "Tokens already distributed");
+
+        _transfer(msg.sender, distributionWallet, supply);
+    }
+}
+
+
+//-------------------------------------------------------------------------------------------------------
+
+
 contract Meme is ERC20 {
     INonfungiblePositionManager posMan = INonfungiblePositionManager(0xC36442b4a4522E871399CD717aBDD847Ab11FE88);
     address constant weth = 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889; // polygon mumbai testnet
