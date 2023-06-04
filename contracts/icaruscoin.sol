@@ -1,29 +1,10 @@
 // SPDX-License-Identifier: MIT
+
 //-------------------------------------------------------------------------------------------------------
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+//-------------------------------------------------------------------------------------------------------
 interface INonfungiblePositionManager {
     struct MintParams {
         address token0;
@@ -52,6 +33,8 @@ interface INonfungiblePositionManager {
     ) external payable returns (address pool);
 }
 
+//-------------------------------------------------------------------------------------------------------
+// File: contracts/icaruscoin.sol
 contract Meme is ERC20 {
     INonfungiblePositionManager posMan = INonfungiblePositionManager(0xC36442b4a4522E871399CD717aBDD847Ab11FE88);
     address constant weth = 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889; // polygon mumbai testnet
