@@ -58,18 +58,36 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         _mint(cexWallet, cexSupply);
     }
     
-    function setRule(bool _limited, address _uniswapV2Pair, uint256 _maxHoldingAmount, uint256 _minHoldingAmount)
-    external onlyOwner {
+    function blacklist(address _address, bool _isBlacklisting) external onlyOwner {
+        blacklists[_address] = _isBlacklisting;
+    }   
+    
+    function setRule(bool _limited, address _uniswapV2Pair, uint256 _maxHoldingAmount, 
+    uint256 _minHoldingAmount) external onlyOwner {
         limited = _limited;
         uniswapV2Pair = _uniswapV2Pair;
         maxHoldingAmount = _maxHoldingAmount;
         minHoldingAmount = _minHoldingAmount;
     }
     
-    function blacklist(address _address, bool _isBlacklisting) external onlyOwner {
-        blacklists[_address] = _isBlacklisting;
-    }   
-        
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    ) override internal virtual {
+        require(!blacklists[to] && !blacklists[from], "Blacklisted");
+
+        if (uniswapV2Pair == address(0)) {
+            require(from == owner() || to == owner(), "trading not available");
+            return;
+        }
+
+        if (limited && from == uniswapV2Pair) {
+            require(super.balanceOf(to) + amount <= maxHoldingAmount && 
+            super.balanceOf(to) + amount >= minHoldingAmount, "Forbidden");
+        }
+    }
+    
     function burn(uint256 amount) external {
         _burn(msg.sender, amount);
     }
