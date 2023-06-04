@@ -53,7 +53,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         _mint(cexWallet, cexSupply);
     }
     
-    function renounceOwnership() public virtual onlyOwner {
+    function renounceOwnership() public onlyOwner {
         renounceOwn();
     }
 
