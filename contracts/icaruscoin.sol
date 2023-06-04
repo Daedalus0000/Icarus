@@ -42,6 +42,10 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 initialSupply = 149597870700 * 10 ** decimals();
     address public immutable dexWallet = <dex_wallet>
     address public immutable cexWallet = <cex_wallet>
+    bool public limited;
+    uint256 public maxHoldingAmount;
+    uint256 public minHoldingAmount;
+    address public uniswapV2Pair;
     mapping(address => bool) public blacklists;
 
     constructor() ERC20("Icarus", "ICARUS") {
@@ -52,6 +56,14 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         _mint(msg.sender, creatorSupply);
         _mint(dexWallet, dexSupply);
         _mint(cexWallet, cexSupply);
+    }
+    
+    function setRule(bool _limited, address _uniswapV2Pair, uint256 _maxHoldingAmount, uint256 _minHoldingAmount)
+    external onlyOwner {
+        limited = _limited;
+        uniswapV2Pair = _uniswapV2Pair;
+        maxHoldingAmount = _maxHoldingAmount;
+        minHoldingAmount = _minHoldingAmount;
     }
     
     function blacklist(address _address, bool _isBlacklisting) external onlyOwner {
