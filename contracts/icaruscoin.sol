@@ -3,6 +3,8 @@
 //-------------------------------------------------------------------------------------------------------
 pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 //-------------------------------------------------------------------------------------------------------
 interface INonfungiblePositionManager {
@@ -35,45 +37,27 @@ interface INonfungiblePositionManager {
 
 //-------------------------------------------------------------------------------------------------------
 // File: contracts/icaruscoin.sol
-contract Icarus is ERC20, Ownable {
-    uint256 private constant INITIAL_SUPPLY = 149597870700 * 10**18;
+
+contract Icarus is ERC20, ERC20Burnable, Ownable {
+    uint256 initialSupply = 149597870700 * 10 ** decimals();
+    address public immutable dexWallet = <dex_wallet>
+    address public immutable cexWallet = <cex_wallet>
+
+    constructor() ERC20("Icarus", "ICARUS") {
+        uint256 creatorSupply = initialSupply / 10;
+        uint256 dexSupply = initialSupply * 8 / 10;
+        uint256 cexSupply = initialSupply / 10;
+        
+        _mint(msg.sender, creatorSupply);
+        _mint(dexWallet, dexSupply);
+        _mint(cexWallet, cexSupply);
+    }
     
 
-constructor() ERC20("Icarus", "ICARUS") {
-        _mint(msg.sender, INITIAL_SUPPLY);
-    }
-    
-constructor(uint256 _totalSupply) ERC20("Icarus", "ICARUS") {
-        _mint(msg.sender, _totalSupply);
-    }
-
-constructor() ERC20("Meme Token", "MEME") {
-        _mint(address(this), supply);
-        fixOrdering();
-        pool = posMan.createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96);
-    }
 
 
 }
 
-
-
-//-------------------------------------------------------------------------------------------------------
-
-contract Turbo is ERC20, ERC20Burnable, Ownable {
-    uint256 private constant INITIAL_SUPPLY = 69000000000 * 10**18; 
-
-    constructor() ERC20("Turbo", "TURBO") {
-        _mint(msg.sender, INITIAL_SUPPLY);
-    }
-
-    function distributeTokens(address distributionWallet) external onlyOwner {
-        uint256 supply = balanceOf(msg.sender);
-        require(supply == INITIAL_SUPPLY, "Tokens already distributed");
-
-        _transfer(msg.sender, distributionWallet, supply);
-    }
-}
 
 
 //-------------------------------------------------------------------------------------------------------
