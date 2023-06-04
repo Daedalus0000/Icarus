@@ -66,45 +66,6 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         renounceOwn();
     }
 
-//----------------------------------------------
-    function addLiquidity(
-        address _tokenA,
-        address _tokenB,
-        uint _amountA,
-        uint _amountB
-    ) external onlyOwner returns (uint amountA, uint amount B, uint liquidity); 
-  
-  
-   
-
-
-
-    function addLiquidityToUniswapETH(uint256 tokenAmount, uint256 ethAmount) external onlyOwner {
-        // Approve the Uniswap router to spend the token
-        approve(uniswapRouter, tokenAmount);
-
-        // Create the token-ETH liquidity pair by adding liquidity
-        IUniswapV2Router02(uniswapRouter).addLiquidityETH{value: ethAmount}(
-            address(this),
-            tokenAmount,
-            0,
-            0,
-            owner(),
-            block.timestamp
-        );
-    }
-
-
-
-
-
-
-//----------------------------------------------
-
-
-
-
-
 
 
 
