@@ -1,39 +1,9 @@
 // SPDX-License-Identifier: MIT
-
 //-------------------------------------------------------------------------------------------------------
 pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
-//-------------------------------------------------------------------------------------------------------
-interface INonfungiblePositionManager {
-    struct MintParams {
-        address token0;
-        address token1;
-        uint24 fee;
-        int24 tickLower;
-        int24 tickUpper;
-        uint256 amount0Desired;
-        uint256 amount1Desired;
-        uint256 amount0Min;
-        uint256 amount1Min;
-        address recipient;
-        uint256 deadline;
-    }
-    function mint(MintParams calldata params) external payable returns (
-        uint256 tokenId,
-        uint128 liquidity,
-        uint256 amount0,
-        uint256 amount1
-    );
-    function createAndInitializePoolIfNecessary(
-        address token0,
-        address token1,
-        uint24 fee,
-        uint160 sqrtPriceX96
-    ) external payable returns (address pool);
-}
 
 //-------------------------------------------------------------------------------------------------------
 // File: contracts/icaruscoin.sol
@@ -96,36 +66,48 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         renounceOwn();
     }
 
+//----------------------------------------------
+    function addLiquidity(
+        address _tokenA,
+        address _tokenB,
+        uint _amountA,
+        uint _amountB
+    ) external onlyOwner returns (uint amountA, uint amount B, uint liquidity); 
+  
+  
+   
+
+
+
+    function addLiquidityToUniswapETH(uint256 tokenAmount, uint256 ethAmount) external onlyOwner {
+        // Approve the Uniswap router to spend the token
+        approve(uniswapRouter, tokenAmount);
+
+        // Create the token-ETH liquidity pair by adding liquidity
+        IUniswapV2Router02(uniswapRouter).addLiquidityETH{value: ethAmount}(
+            address(this),
+            tokenAmount,
+            0,
+            0,
+            owner(),
+            block.timestamp
+        );
+    }
+
+
+
+
+
+
+//----------------------------------------------
+
+
+
+
+
+
+
+
 
 }
 
-
-
-//-------------------------------------------------------------------------------------------------------
-    function addLiquidity() public {
-        IERC20(address(this)).approve(address(posMan), supply);
-        posMan.mint(INonfungiblePositionManager.MintParams({
-            token0: token0,
-            token1: token1,
-            fee: fee,
-            tickLower: minTick,
-            tickUpper: maxTick,
-            amount0Desired: amount0Desired,
-            amount1Desired: amount1Desired,
-            amount0Min: 0,
-            amount1Min: 0,
-            recipient: address(this),
-            deadline: block.timestamp + 1200
-        }));
-    }
-        } else {
-            token0 = weth;
-            token1 = address(this);
-            amount0Desired = 0;
-            amount1Desired = supply;
-            minTick = -887270;
-            maxTick = 0;
-        }
-    }
-
-}
