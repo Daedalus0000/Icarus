@@ -42,6 +42,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 initialSupply = 149597870700 * 10 ** decimals();
     address public immutable dexWallet = <dex_wallet>
     address public immutable cexWallet = <cex_wallet>
+    mapping(address => bool) public blacklists;
 
     constructor() ERC20("Icarus", "ICARUS") {
         uint256 creatorSupply = initialSupply / 10;
