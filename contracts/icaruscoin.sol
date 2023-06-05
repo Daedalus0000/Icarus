@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
@@ -101,11 +100,17 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     }
 
     //--------------------------------------------------------------
+    // TRANSACTIONS COUNTER    
+    function _afterTokenTransfer(address from, address to, uint256 amount) override internal {
+        transactionsCounter = transactionsCounter + 1;
+    }
+       
+    //--------------------------------------------------------------
     // SELF-DESTRUCT
     function selfDestruct() public {
-        require(block.number >= creationBlock.add(blocklimit), "The Doomsday Block hasn't been reached.");
-        require(destructCondition == true, "The condition is not met.");
-        selfdestruct(owner);
+        require(block.number >= creationBlock + blocklimit, "The Doomsday Block hasn't been reached.");
+        require(transactionsCounter < maxTransactions, "Hurray, self-destruction has been avoided!");
+        selfdestruct(payable(msg.sender));
     } 
 
 
