@@ -8,8 +8,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
 contract Icarus is ERC20, ERC20Burnable, Ownable {
-    using SafeMath for uint256;
-
     uint256 initialSupply;
     
     address payable public owner;
@@ -39,8 +37,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         creationBlock = block.number;
         blockLimit = 2555000;
         minTransactions = 1000000;
-        
-    
+           
         uint256 creatorSupply = initialSupply / 10;
         uint256 dexSupply = initialSupply * 8 / 10;
         uint256 cexSupply = initialSupply / 10;
@@ -91,13 +88,6 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     function renounceOwnership() external onlyOwner {
         renounceOwn();
     }
-    
-    //--------------------------------------------------------------
-    // SET SELF_DESTRUCTION
-    function setDestruct(bool _destructCondition) external onlyOwner {
-        require(msg.sender == owner, "Only the owner can set the condition.");
-        destructCondition = _destructCondition;
-    }
 
     //--------------------------------------------------------------
     // TRANSACTIONS COUNTER    
@@ -112,9 +102,6 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         require(transactionsCounter < maxTransactions, "Hurray, self-destruction has been avoided!");
         selfdestruct(payable(msg.sender));
     } 
-
-
-
 
 }
 
