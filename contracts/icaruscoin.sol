@@ -45,7 +45,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     }
     
     // Initialize liquidity pool
-    function _beforeTokenTransfer(address from, address to, uint256 amount) override internal virtual {
+    function _beforeTokenTransfer(address from, address to, uint256 amount) override internal {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
 
         if (uniswapPool == address(0)) {
