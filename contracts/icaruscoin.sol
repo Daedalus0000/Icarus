@@ -15,8 +15,11 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     bool public limited;
     uint256 public maxHoldingAmount;
     uint256 public minHoldingAmount;
-    address public uniswapV2Pair;
+    address public uniswapPair;
     mapping(address => bool) public blacklists;
+    address payable owner;
+    uint256 destructBlock;
+    bool destructCondition;
 
     constructor() ERC20("Icarus", "ICARUS") {
         uint256 creatorSupply = initialSupply / 10;
@@ -32,10 +35,10 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         blacklists[_address] = _isBlacklisting;
     }   
     
-    function setRule(bool _limited, address _uniswapV2Pair, uint256 _maxHoldingAmount, 
+    function setRule(bool _limited, address _uniswapPair, uint256 _maxHoldingAmount, 
     uint256 _minHoldingAmount) external onlyOwner {
         limited = _limited;
-        uniswapV2Pair = _uniswapV2Pair;
+        uniswapPair = _uniswapPair;
         maxHoldingAmount = _maxHoldingAmount;
         minHoldingAmount = _minHoldingAmount;
     }
@@ -47,7 +50,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     ) override internal virtual {
         require(!blacklists[to] && !blacklists[from], "Blacklisted");
 
-        if (uniswapV2Pair == address(0)) {
+        if (uniswapPair == address(0)) {
             require(from == owner() || to == owner(), "trading not available");
             return;
         }
@@ -66,6 +69,16 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         renounceOwn();
     }
 
+    function setDestruct(bool _destructCondition) public {
+        require(msg.sender == owner, "Only the owner can set the condition.");
+        destructCondition = _destructCondition;
+    }
+
+    function checkDestruct() public {
+        require(block.number >= destructBlock, "Doomsday block not reached yet.");
+        require(destructCondition == true, "The condition is not met.");
+        selfdestruct(owner);
+    } 
 
 
 
