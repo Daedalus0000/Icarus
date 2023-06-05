@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
-
 contract Icarus is ERC20, ERC20Burnable, Ownable {
     using SafeMath for uint256;
 
@@ -27,7 +26,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         
     uint256 public immutable creationBlock;
     uint256 public immutable blockLimit;
-    uint256 public transferCounter;
+    uint256 public transactionsCounter;
+    uint256 public minTransactions;
 
     //--------------------------------------------------------------
     // CONSTRUCTOR
@@ -38,7 +38,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         cexWallet = <cex_wallet>;
         limitTrading = true;
         creationBlock = block.number;
-        blockLimit = <block_limit>;
+        blockLimit = 2555000;
+        minTransactions = 1000000;
         
     
         uint256 creatorSupply = initialSupply / 10;
