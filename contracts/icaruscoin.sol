@@ -55,7 +55,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
 
         if (uniswapPair == address(0)) {
-            require(from == owner() || to == owner(), "Trading not available");
+            require(from == owner() || to == owner(), "Token transfer not available");
             return;
         }
 
