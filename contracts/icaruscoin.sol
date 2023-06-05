@@ -40,7 +40,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
            
         uint256 creatorSupply = initialSupply / 10;
         uint256 dexSupply = initialSupply * 8 / 10;
-        uint256 cexSupply = initialSupply / 10;
+        uint256 cexSupply = initialSupply - dexSupply - creatorSupply;
         
         _mint(msg.sender, creatorSupply);
         _mint(dexWallet, dexSupply);
