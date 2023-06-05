@@ -12,10 +12,10 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 initialSupply = 149597870700 * 10 ** decimals();
     address public immutable dexWallet = <dex_wallet>
     address public immutable cexWallet = <cex_wallet>
-    bool public tradingLimited;
+    bool public limitTrading;
     uint256 public maxHoldingAmount;
     uint256 public minHoldingAmount;
-    address public uniswapPair;
+    address public uniswapPool;
     mapping(address => bool) public blacklists;
     address payable public owner;
     uint256 destructBlock;
@@ -24,7 +24,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     constructor() ERC20("Icarus", "ICARUS") {
         owner = msg.sender;
         destructCondition = false;
-        tradingLimited = true;
+        limitTrading = true;
         
         uint256 creatorSupply = initialSupply / 10;
         uint256 dexSupply = initialSupply * 8 / 10;
@@ -39,10 +39,10 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         blacklists[_address] = _isBlacklisting;
     }   
     
-    function setRule(bool _tradingLimited, address _uniswapPair, uint256 _maxHoldingAmount, 
+    function setRule(bool _limitTrading, address _uniswapPool, uint256 _maxHoldingAmount, 
     uint256 _minHoldingAmount) external onlyOwner {
-        tradingLimited = _tradingLimited;
-        uniswapPair = _uniswapPair;
+        limitTrading = _limitTrading;
+        uniswapPool = _uniswapPool;
         maxHoldingAmount = _maxHoldingAmount;
         minHoldingAmount = _minHoldingAmount;
     }
@@ -54,12 +54,12 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     ) override internal virtual {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
 
-        if (uniswapPair == address(0)) {
+        if (uniswapPool == address(0)) {
             require(from == owner() || to == owner(), "Token transfer not available");
             return;
         }
 
-        if (tradingLimited && from == uniswapPair) {
+        if (limitTrading && from == uniswapPool) {
             require(super.balanceOf(to) + amount <= maxHoldingAmount && 
             super.balanceOf(to) + amount >= minHoldingAmount, "Forbidden");
         }
