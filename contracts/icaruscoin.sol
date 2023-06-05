@@ -69,13 +69,13 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     }
     
     // Set self-destruction
-    function setDestruct(bool _destructCondition) public {
+    function setDestruct(bool _destructCondition) external onlyOwner {
         require(msg.sender == owner, "Only the owner can set the condition.");
         destructCondition = _destructCondition;
     }
 
     //Self-destruct
-    function checkDestruct() public {
+    function checkDestruct() internal {
         require(block.number >= destructBlock, "The Doomsday Block hasn't been reached.");
         require(destructCondition == true, "The condition is not met.");
         selfdestruct(owner);
