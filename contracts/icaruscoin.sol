@@ -4,24 +4,43 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 //-------------------------------------------------------------------------------------------------------------------------------------
-// File: contracts/icaruscoin.sol
+// CONTRACT
 
 contract Icarus is ERC20, ERC20Burnable, Ownable {
-    uint256 initialSupply = 149597870700 * 10 ** decimals();
-    address public immutable dexWallet = <dex_wallet>
-    address public immutable cexWallet = <cex_wallet>
-    bool public limitTrading = true;
+    using SafeMath for uint256;
+
+    uint256 initialSupply;
+    
+    address payable public owner;
+    address public immutable dexWallet;
+    address public immutable cexWallet;
+    
+    mapping(address => bool) public blacklists;
+    
+    bool public limitTrading;
     uint256 public maxHoldingAmount;
     uint256 public minHoldingAmount;
     address public uniswapPool;
-    mapping(address => bool) public blacklists;
-    address payable public owner = msg.sender;
-    uint256 destructBlock = <block>;
-    bool destructCondition = false;
+        
+    uint256 public immutable creationBlock;
+    uint256 public immutable blockLimit;
+    uint256 public transferCounter;
 
-    constructor() ERC20("Icarus", "ICARUS") { 
+    //--------------------------------------------------------------
+    // CONSTRUCTOR
+    constructor() ERC20("Icarus", "ICARUS") {
+        initialSupply = 149597870700 * 10 ** decimals();
+        owner = msg.sender;
+        dexWallet = <dex_wallet>;
+        cexWallet = <cex_wallet>;
+        limitTrading = true;
+        creationBlock = block.number;
+        blockLimit = <block_limit>;
+        
+    
         uint256 creatorSupply = initialSupply / 10;
         uint256 dexSupply = initialSupply * 8 / 10;
         uint256 cexSupply = initialSupply / 10;
@@ -31,12 +50,14 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         _mint(cexWallet, cexSupply);
     }
     
-    // Blacklist
+    //--------------------------------------------------------------
+    // BLACKLIST
     function blacklist(address _address, bool _isBlacklisting) external onlyOwner {
         blacklists[_address] = _isBlacklisting;
     }   
     
-    // Set trading rules
+    //--------------------------------------------------------------
+    // SET TRADING RULES
     function setRule(bool _limitTrading, address _uniswapPool, uint256 _maxHoldingAmount, uint256 _minHoldingAmount) external onlyOwner {
         limitTrading = _limitTrading;
         uniswapPool = _uniswapPool;
@@ -44,7 +65,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         minHoldingAmount = _minHoldingAmount;
     }
     
-    // Initialize liquidity pool
+    //--------------------------------------------------------------
+    // INITIALIZE LIQUIDITY POOL
     function _beforeTokenTransfer(address from, address to, uint256 amount) override internal {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
 
@@ -58,25 +80,29 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         }
     }
     
-    // Burn token
+    //--------------------------------------------------------------    
+    // BURN TOKEN
     function burn(uint256 amount) external {
         _burn(msg.sender, amount);
     }
     
-    // Renounce contract ownership
+    //--------------------------------------------------------------
+    // RENOUNCE CONTRACT OWNERSHIP
     function renounceOwnership() external onlyOwner {
         renounceOwn();
     }
     
-    // Set self-destruction
+    //--------------------------------------------------------------
+    // SET SELF_DESTRUCTION
     function setDestruct(bool _destructCondition) external onlyOwner {
         require(msg.sender == owner, "Only the owner can set the condition.");
         destructCondition = _destructCondition;
     }
 
-    //Self-destruct
-    function checkDestruct() internal {
-        require(block.number >= destructBlock, "The Doomsday Block hasn't been reached.");
+    //--------------------------------------------------------------
+    // SELF-DESTRUCT
+    function selfDestruct() public {
+        require(block.number >= creationBlock.add(blocklimit), "The Doomsday Block hasn't been reached.");
         require(destructCondition == true, "The condition is not met.");
         selfdestruct(owner);
     } 
