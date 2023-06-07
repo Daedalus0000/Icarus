@@ -38,8 +38,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         creatorSupply = initialSupply - dexSupply - cexSupply;
                 
         owner = msg.sender;
-        cexWallet = <cex_wallet>;
-        creatorWallet = <creator_wallet>;
+        cexWallet = 0x042DAe440FD05cd84d84EB1a2F6e3811a9D57800;
+        creatorWallet = 0x9622e79e6a0D138d60a36aa5cB7c063462277fe5;
         
         limitTrading = true;
         
