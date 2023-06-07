@@ -103,13 +103,13 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     
     //--------------------------------------------------------------
     // GET TRANSACTION COUNT    
-    function _getTransactionsCount() public view returns (uint256) {
+    function getTransactionsCount() external view returns (uint256) {
         return transactionCounter;
     }     
        
     //--------------------------------------------------------------
     // SELF-DESTRUCT
-    function destroyContract() public {
+    function destroyContract() external {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
         selfdestruct(payable(msg.sender));
