@@ -85,7 +85,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     
     //--------------------------------------------------------------    
     // BURN TOKEN
-    function burn(uint256 amount) external {
+    function burnToken(uint256 amount) external {
         _burn(msg.sender, amount);
     }
     
