@@ -27,7 +27,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 public immutable creationBlock;
     uint256 public immutable blockLimit;
     uint256 public immutable minTransactions;
-    uint256 public transactionsCounter;
+    uint256 public transactionCounter;
 
     //--------------------------------------------------------------
     // CONSTRUCTOR
@@ -46,7 +46,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         creationBlock = block.number;
         blockLimit = 2555000;
         minTransactions = 1000000;
-        transactionsCounter = 0;
+        transactionCounter = 0;
            
         _mint(owner, dexSupply);
         _mint(cexWallet, cexSupply);
@@ -98,14 +98,20 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     //--------------------------------------------------------------
     // TRANSACTIONS COUNTER    
     function _afterTokenTransfer(address from, address to, uint256 amount) override internal {
-        transactionsCounter += 1;
+        transactionCounter += 1;
     }
+    
+    //--------------------------------------------------------------
+    // GET TRANSACTIONS COUNT    
+    function _getTransactionsCount() public view returns (uint256) {
+        return transactionCounter;
+    }     
        
     //--------------------------------------------------------------
     // SELF-DESTRUCT
     function selfDestruct() public {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
-        require(transactionsCounter < minTransactions, "Hurray, self-destruction has been avoided!");
+        require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
         selfdestruct(payable(msg.sender));
     } 
 
