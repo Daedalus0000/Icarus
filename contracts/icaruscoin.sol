@@ -8,14 +8,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
 contract Icarus is ERC20, ERC20Burnable, Ownable {
-    uint256 initialSupply;
-    uint256 dexSupply;
-    uint256 cexSupply;
-    uint256 creatorSupply;
+    uint256 public immutable initialSupply;
+    uint256 public immutable dexSupply;
+    uint256 public immutable cexSupply;
+    uint256 public immutable creatorSupply;
     
-    address payable public owner;
-    address public cexWallet;
-    address public creatorWallet;
+    address payable public immutable owner;
+    address payable public immutable cexWallet;
+    address payable public immutable creatorWallet;
     
     mapping(address => bool) public blacklists;
     
@@ -26,8 +26,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         
     uint256 public immutable creationBlock;
     uint256 public immutable blockLimit;
+    uint256 public immutable minTransactions;
     uint256 public transactionsCounter;
-    uint256 public minTransactions;
 
     //--------------------------------------------------------------
     // CONSTRUCTOR
@@ -91,7 +91,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     //--------------------------------------------------------------
     // RENOUNCE CONTRACT OWNERSHIP
     function renounceOwnership() external onlyOwner {
-        renounceOwn();
+        transferOwnership(address(0));
     }
 
     //--------------------------------------------------------------
