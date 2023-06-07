@@ -91,8 +91,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     
     //--------------------------------------------------------------
     // RENOUNCE CONTRACT OWNERSHIP
-    function renounceOwnership() external onlyOwner {
-        transferOwnership(address(0));
+    function renounceContract() external onlyOwner {
+        renounceOwnership();
     }
 
     //--------------------------------------------------------------
