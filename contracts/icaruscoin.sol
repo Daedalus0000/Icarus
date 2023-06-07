@@ -97,8 +97,9 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
 
     //--------------------------------------------------------------
     // TRANSACTION COUNTER    
-    function _afterTokenTransfer(address from, address to, uint256 amount) override internal {
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal override {
         transactionCounter += 1;
+        super._afterTokenTransfer(from, to, amount);
     }
     
     //--------------------------------------------------------------
