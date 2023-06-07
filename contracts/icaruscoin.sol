@@ -13,6 +13,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 public immutable cexSupply;
     uint256 public immutable creatorSupply;
     
+    address public immutable dexWallet;
     address public immutable cexWallet;
     address public immutable creatorWallet;
     
@@ -36,6 +37,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         cexSupply = initialSupply / 10;
         creatorSupply = initialSupply - dexSupply - cexSupply;
                 
+        dexWallet = msg.sender;
         cexWallet = 0x042DAe440FD05cd84d84EB1a2F6e3811a9D57800;
         creatorWallet = 0x9622e79e6a0D138d60a36aa5cB7c063462277fe5;
         
@@ -72,7 +74,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
 
         if (uniswapPool == address(0)) {
-            require(from == owner || to == owner, "Token transfer not available");
+            require(from == dexWallet || to == dexWallet, "Token transfer not available");
             return;
         }
 
