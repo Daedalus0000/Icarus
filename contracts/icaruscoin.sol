@@ -109,7 +109,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
        
     //--------------------------------------------------------------
     // SELF-DESTRUCT
-    function selfDestruct() public {
+    function destroyContract() public {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
         selfdestruct(payable(msg.sender));
