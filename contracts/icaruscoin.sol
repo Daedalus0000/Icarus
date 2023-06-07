@@ -70,17 +70,16 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     
     //--------------------------------------------------------------
     // INITIALIZE LIQUIDITY POOL
-    function _beforeTokenTransfer(address from, address to, uint256 amount) override internal {
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal override {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
-
         if (uniswapPool == address(0)) {
             require(from == dexWallet || to == dexWallet, "Token transfer not available");
             return;
         }
-
         if (limitTrading && from == uniswapPool) {
             require(super.balanceOf(to) + amount <= maxHoldingAmount && super.balanceOf(to) + amount >= minHoldingAmount, "Trading limited");
         }
+        super._beforeTokenTransfer(from, to, amount);
     }
     
     //--------------------------------------------------------------    
@@ -97,7 +96,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
 
     //--------------------------------------------------------------
     // TRANSACTION COUNTER    
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Burnable) {
+    function _afterTokenTransfer(address from, address to, uint256 amount) internal override {
         transactionCounter += 1;
         super._afterTokenTransfer(from, to, amount);
     }
