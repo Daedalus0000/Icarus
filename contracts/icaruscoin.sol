@@ -46,6 +46,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         creationBlock = block.number;
         blockLimit = 2555000;
         minTransactions = 1000000;
+        transactionsCounter = 0;
            
         _mint(owner, dexSupply);
         _mint(cexWallet, cexSupply);
@@ -97,7 +98,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     //--------------------------------------------------------------
     // TRANSACTIONS COUNTER    
     function _afterTokenTransfer(address from, address to, uint256 amount) override internal {
-        transactionsCounter = transactionsCounter + 1;
+        transactionsCounter += 1;
     }
        
     //--------------------------------------------------------------
