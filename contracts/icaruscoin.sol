@@ -13,8 +13,8 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
     uint256 public immutable cexSupply;
     uint256 public immutable creatorSupply;
     
-    address payable public immutable cexWallet;
-    address payable public immutable creatorWallet;
+    address public immutable cexWallet;
+    address public immutable creatorWallet;
     
     mapping(address => bool) public blacklists;
     
@@ -46,7 +46,7 @@ contract Icarus is ERC20, ERC20Burnable, Ownable {
         minTransactions = 1000000;
         transactionCounter = 0;
            
-        _mint(payable(msg.sender), dexSupply);
+        _mint(msg.sender, dexSupply);
         _mint(cexWallet, cexSupply);
         _mint(creatorWallet, creatorSupply);
     }
