@@ -74,7 +74,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal whenNotPaused override {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
         if (uniswapPool == address(0)) {
-            require(from == dexWallet || to == dexWallet || to == cexWallet || to == creatorwallet, "Token transfer not available");
+            require(from == dexWallet || to == dexWallet || to == cexWallet || to == creatorWallet, "Token transfer not available");
             return;
         }
         if (limitTrading && from == uniswapPool) {
