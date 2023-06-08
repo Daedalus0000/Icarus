@@ -107,10 +107,16 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     function getTransactionsCount() external view returns (uint256) {
         return transactionCounter;
     }     
+    
+    //--------------------------------------------------------------
+    // GET PAUSE STATUS    
+    function paused() external view returns (bool) {
+        return _paused;
+    }     
        
     //--------------------------------------------------------------
     // PAUSE FOREVER
-    function pauseForever() public onlyOwner {
+    function pauseForever() public {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
         _pause();
