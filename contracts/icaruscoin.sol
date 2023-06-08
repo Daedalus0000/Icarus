@@ -49,7 +49,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         minTransactions = 1000000;
         transactionCounter = 0;
            
-        _mint(msg.sender, dexSupply);
+        _mint(dexWallet, dexSupply);
         _mint(cexWallet, cexSupply);
         _mint(creatorWallet, creatorSupply);
     }
