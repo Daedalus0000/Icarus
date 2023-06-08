@@ -70,8 +70,8 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     }
     
     //--------------------------------------------------------------
-    // INITIALIZE LIQUIDITY POOL
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal override {
+    // TRANSACTION CONTROL
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal whenNotPaused override {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
         if (uniswapPool == address(0)) {
             require(from == dexWallet || to == dexWallet, "Token transfer not available");
@@ -110,6 +110,12 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
        
     //--------------------------------------------------------------
     // SELF-DESTRUCT
+    function pauseForever() public onlyOwner {
+        _pause();
+    }
+    
+    
+    
     function destroyContract() external {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
