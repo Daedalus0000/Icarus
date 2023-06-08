@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
 contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
-    uint256 public immutable totalSupply;
+    uint256 public immutable initialSupply;
     uint256 public immutable dexSupply;
     uint256 public immutable cexSupply;
     uint256 public immutable creatorSupply;
@@ -33,10 +33,10 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     //--------------------------------------------------------------
     // CONSTRUCTOR
     constructor() ERC20("Icarus", "ICARUS") {
-        totalSupply = 149597870700 * 10 ** decimals();
-        dexSupply = totalSupply / 10 * 8;
-        cexSupply = totalSupply / 10;
-        creatorSupply = totalSupply - dexSupply - cexSupply;
+        initialSupply = 149597870700 * 10 ** decimals();
+        dexSupply = initialSupply / 10 * 8;
+        cexSupply = initialSupply / 10;
+        creatorSupply = initialSupply - dexSupply - cexSupply;
                 
         dexWallet = msg.sender;
         cexWallet = 0x042DAe440FD05cd84d84EB1a2F6e3811a9D57800;
