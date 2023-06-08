@@ -109,18 +109,12 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     }     
        
     //--------------------------------------------------------------
-    // SELF-DESTRUCT
+    // PAUSE FOREVER
     function pauseForever() public onlyOwner {
-        _pause();
-    }
-    
-    
-    
-    function destroyContract() external {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
-        selfdestruct(payable(msg.sender));
-    } 
+        _pause();
+    }
 
 }
 
