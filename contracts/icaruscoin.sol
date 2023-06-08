@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 // CONTRACT
-contract Icarus is ERC20, ERC20Burnable, Ownable {
+contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     uint256 public immutable initialSupply;
     uint256 public immutable dexSupply;
     uint256 public immutable cexSupply;
