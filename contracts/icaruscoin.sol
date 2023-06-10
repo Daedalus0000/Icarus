@@ -103,6 +103,12 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     }
     
     //--------------------------------------------------------------
+    // GET BLACKLISTED    
+    function getBlacklisted(address _address) external view returns (bool) {
+        return blacklists[_address];
+    }    
+    
+    //--------------------------------------------------------------
     // GET TRANSACTION COUNT    
     function getTransactionsCount() external view returns (uint256) {
         return transactionCounter;
