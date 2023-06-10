@@ -110,15 +110,15 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     
     //--------------------------------------------------------------
     // GET TRANSACTION COUNT    
-    function getTransactionsCount() external view returns (uint256) {
-        return transactionCounter;
-    }     
+    //function getTransactionsCount() external view returns (uint256) {
+    //    return transactionCounter;
+    //}     
     
     //--------------------------------------------------------------
     // GET PAUSE STATUS    
-    function getPauseStatus() external view returns (bool) {
-        paused();
-    }   
+    //function getPauseStatus() external view returns (bool) {
+    //    paused();
+    //}   
        
     //--------------------------------------------------------------
     // PAUSE FOREVER
