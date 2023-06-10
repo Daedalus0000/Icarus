@@ -137,7 +137,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     
     //--------------------------------------------------------------
     // UNPAUSE
-    function unpauseContract() external onlyOwner {
+    function unpauseContract() external whenPaused onlyOwner {
         _unpause();
     }
     
