@@ -43,8 +43,8 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         creatorWallet = 0x9622e79e6a0D138d60a36aa5cB7c063462277fe5;
         
         limitTrading = true;
-        maxHoldingAmount = ;
-        minHoldingAmount = ;
+        maxHoldingAmount = 1000000;
+        minHoldingAmount = 0;
         
         creationBlock = block.number;
         blockLimit = 2600000;
