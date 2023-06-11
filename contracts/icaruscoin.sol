@@ -14,7 +14,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     uint256 public immutable cexSupply;
     uint256 public immutable creatorSupply;
     
-    address public immutable dexWallet;
+    address public immutable mainWallet;
     address public immutable cexWallet;
     address public immutable creatorWallet;
     
@@ -38,7 +38,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         cexSupply = initialSupply / 10;
         creatorSupply = initialSupply - dexSupply - cexSupply;
                 
-        dexWallet = msg.sender;
+        mainWallet = msg.sender;
         cexWallet = 0x042DAe440FD05cd84d84EB1a2F6e3811a9D57800;
         creatorWallet = 0x9622e79e6a0D138d60a36aa5cB7c063462277fe5;
         
@@ -49,7 +49,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         minTransactions = 1000000;
         transactionCounter = 0;
            
-        _mint(dexWallet, dexSupply);
+        _mint(mainWallet, dexSupply);
         _mint(cexWallet, cexSupply);
         _mint(creatorWallet, creatorSupply);
     }
@@ -74,7 +74,7 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal whenNotPaused override {
         require(!blacklists[to] && !blacklists[from], "Address Blacklisted");
         if (uniswapPool == address(0)) {
-            require(from == dexWallet || to == dexWallet || to == cexWallet || to == creatorWallet, "Token transfer not available");
+            require(from == mainWallet || to == mainWallet || to == cexWallet || to == creatorWallet, "Token transfer not available");
             return;
         }
         if (limitTrading && from == uniswapPool) {
