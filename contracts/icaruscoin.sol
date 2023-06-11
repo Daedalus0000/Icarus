@@ -43,9 +43,11 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         creatorWallet = 0x9622e79e6a0D138d60a36aa5cB7c063462277fe5;
         
         limitTrading = true;
+        maxHoldingAmount = ;
+        minHoldingAmount = ;
         
         creationBlock = block.number;
-        blockLimit = 2555000;
+        blockLimit = 2600000;
         minTransactions = 1000000;
         transactionCounter = 0;
            
@@ -82,18 +84,6 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         }
         super._beforeTokenTransfer(from, to, amount);
     }
-    
-    //--------------------------------------------------------------    
-    // BURN TOKEN
-    //function burnToken(uint256 amount) external {
-    //    _burn(msg.sender, amount);
-    //}
-    
-    //--------------------------------------------------------------
-    // RENOUNCE CONTRACT OWNERSHIP
-    //function renounceContract() external onlyOwner {
-    //    renounceOwnership();
-    //}
 
     //--------------------------------------------------------------
     // TRANSACTION COUNTER    
@@ -101,24 +91,6 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         transactionCounter += 1;
         super._afterTokenTransfer(from, to, amount);
     }
-    
-    //--------------------------------------------------------------
-    // GET BLACKLISTED    
-    //function getBlacklisted(address _address) external view returns (bool) {
-    //    return blacklists[_address];
-    //}    
-    
-    //--------------------------------------------------------------
-    // GET TRANSACTION COUNT    
-    //function getTransactionsCount() external view returns (uint256) {
-    //    return transactionCounter;
-    //}     
-    
-    //--------------------------------------------------------------
-    // GET PAUSE STATUS    
-    //function getPauseStatus() external view returns (bool) {
-    //    paused();
-    //}   
        
     //--------------------------------------------------------------
     // PAUSE FOREVER
@@ -126,13 +98,12 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
         require(block.number >= creationBlock + blockLimit, "The Doomsday Block hasn't been reached.");
         require(transactionCounter < minTransactions, "Hurray, self-destruction has been avoided!");
         _pause();
-        payable (msg.sender).transfer (address(this).balance);
     }
     
     //--------------------------------------------------------------
     // RETRIEVE FUNDS
     function retrieveFunds() external whenPaused {
-        payable (msg.sender).transfer (address(this).balance);
+        payable(msg.sender).transfer (address(this).balance);
     }
     
     //--------------------------------------------------------------
@@ -140,7 +111,6 @@ contract Icarus is ERC20, ERC20Burnable, Pausable, Ownable {
     function unpauseContract() external whenPaused onlyOwner {
         _unpause();
     }
-    
-
+   
 }
 
