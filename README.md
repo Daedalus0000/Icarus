@@ -15,6 +15,8 @@ If the Doomsday Block is reached without surpassing 1 million transactions, any 
 3. Connect to Uniswap: Go to app.uniswap.org in Google Chrome or the  Metamask app. Connect your wallet. Paste the $ICARUS token address into Uniswap, select Icarus, and confirm. Sign with Metamask.
 4. Switch ETH for $ICARUS: there are NO taxes of any kind, so you don’t need to worry about buying with a specific slippage, although you may need to use slippage during times of market volatility.
 
+ATTENTION: The max holding amount per wallet will be limited to 1,000,000 tokens until the liquidity pool has been successfully set up.
+
 ## Tokenomics
 
 Total supply: 149,597,870,700
